@@ -1,5 +1,4 @@
-// Sample Insert, Update, View, Delete 
-
+// Sample Insert, Update, View, Delete
 
     void InsertCustomer() //Insert customer record into the database
     {
@@ -11,7 +10,7 @@
         {
             //Open connection
             con.Open();
-            //Use the initialize SQL Connection from the first line as the 
+            //Use the initialize SQL Connection from the first line as the
             //SQL connection for the current SqlCommand and for the rest of the
             //code block
             cmd.Connection = con;
@@ -54,18 +53,18 @@
             //enter what ID to filter
             cmd.Parameters.AddWithValue("@ID", txtID.Text);
             //Initialize a SqlDataReader by assigning it to the variable data
-            using (SqlDataReader data = cmd.ExecuteReader()) 
+            using (SqlDataReader data = cmd.ExecuteReader())
             {
                 //If the particular ExecuteReader has Rows/Records in it
-                if (data.hasRows) 
+                if (data.hasRows)
                 {
                     //While reading the data inside the filtered records
                     //We assign the records to the textboxes
-                    //on the left side, and to the right is we are 
+                    //on the left side, and to the right is we are
                     //Converting the data["FirstName"] records to a string
                     //ToString(); so that it can be displayed
                     //in the txtFirstName textboxes
-                    while (data.Read()) 
+                    while (data.Read())
                     {
                         txtFirstName.Text = data["FirstName"].ToString();
                         txtLastName.Text = data["LastName"].ToString();
@@ -74,12 +73,12 @@
                     }
                 }
                 //If there are no records from the resulting query
-                else 
+                else
                 {
                     Response.Redirect("ViewCustomer.aspx");
                 }
             }
-            
+
         }
     }
 
@@ -111,7 +110,7 @@
     void UpdateCustomer() //Update a customers record
     {
         using (SqlConnection con = new SqlConnection(Helper.GetCon()))
-        using (SqlCommand cmd = new SqlCommand()) 
+        using (SqlCommand cmd = new SqlCommand())
         {
             con.Open();
             cmd.Connection = con;
@@ -122,7 +121,7 @@
             //it to its individual parameters as seen below denoted by
             //the @ before the name
             cmd.CommandText = "UPDATE Customers SET FirstName=@FirstName, " +
-                "LastName=@LastName, TelNo=@TelNo, Address=@Address " + 
+                "LastName=@LastName, TelNo=@TelNo, Address=@Address " +
                 "WHERE ID=@ID";
             cmd.Parameters.AddWithValue("@ID", txtID.Text);
             cmd.Parameters.AddWithValue("@FirstName", txtFirstName.Text);
@@ -138,12 +137,12 @@
     void DeleteCustomer() //Delete a customer record
     {
         using (SqlConnection con = new SqlConnection(Helper.GetCon()))
-        using (SqlCommand cmd = new SqlCommand()) 
+        using (SqlCommand cmd = new SqlCommand())
         {
             con.Open();
             cmd.Connection = con;
             //Delete all records resulting from the WHERE
-            //filter criteria denoted by the 
+            //filter criteria denoted by the
             //WHERE [TableColumn]=[Parameter]
             cmd.CommandText = "DELETE * FROM Customers WHERE ID=@ID";
             cmd.Parameters.AddWithValue("@ID", txtID.Text);
@@ -151,4 +150,3 @@
             Response.Redirect("ViewCustomer.aspx");
         }
     }
-
