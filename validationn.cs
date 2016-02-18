@@ -1,5 +1,6 @@
 // Name validator
 <asp:RegularExpressionValidator ID="nmVld" runat="server"
+     ForeColor="red"
      display="Dynamic"
      ControlToValidate="txtName"
      ValidationExpression="^[a-zA-Z'.\s]{1,50}"
@@ -7,6 +8,7 @@
 
 // Date validator
 <asp:RegularExpressionValidator ID="bdayVld" runat="server"
+     ForeColor="red"
      display="Dynamic"
      ControlToValidate="txtBday"
      ErrorMessage="Please Enter a valid date in the format (mm/dd/yyyy)"
@@ -14,7 +16,24 @@
 
 // Email validator
 <asp:RegularExpressionValidator ID="emlVld" runat="server"
+     ForeColor="red"
      Display="Dynamic"
+     ControlToValidate="txtEmail" />
      ErrorMessage="Please enter valid e-mail address"
      ValidationExpression="^[\w\.\-]+@[a-zA-Z0-9\-]+(\.[a-zA-Z0-9\-]{1,})*(\.[a-zA-Z]{2,3}){1,2}$"
-     ControlToValidate="txtEmail" />
+
+// 7 Digit phone validator
+<asp:RegularExpressionValidator ID="PhnVld" runat="server"
+    ForeColor="Red"
+    Display="Dynamic"
+    ControlToValidate="txtPhone"
+    ValidationExpression="^[0-9]{7}$"
+    ErrorMessage="Enter a valid Phone Number" />
+
+// 11 Digit mobile validator
+<asp:RegularExpressionValidator ID="MblVld" runat="server"
+    ForeColor="Red"
+    Display="Dynamic"
+    ControlToValidate="txtMobile"
+    ValidationExpression="^[0-9]{11}$"
+    ErrorMessage="Enter a valid Mobile Number" />
