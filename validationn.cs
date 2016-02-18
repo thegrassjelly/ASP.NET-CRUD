@@ -18,9 +18,9 @@
 <asp:RegularExpressionValidator ID="emlVld" runat="server"
      ForeColor="red"
      Display="Dynamic"
-     ControlToValidate="txtEmail" />
+     ControlToValidate="txtEmail"
      ErrorMessage="Please enter valid e-mail address"
-     ValidationExpression="^[\w\.\-]+@[a-zA-Z0-9\-]+(\.[a-zA-Z0-9\-]{1,})*(\.[a-zA-Z]{2,3}){1,2}$"
+     ValidationExpression="^[\w\.\-]+@[a-zA-Z0-9\-]+(\.[a-zA-Z0-9\-]{1,})*(\.[a-zA-Z]{2,3}){1,2}$" />
 
 // 7 Digit phone validator
 <asp:RegularExpressionValidator ID="PhnVld" runat="server"
@@ -37,3 +37,28 @@
     ControlToValidate="txtMobile"
     ValidationExpression="^[0-9]{11}$"
     ErrorMessage="Enter a valid Mobile Number" />
+
+// Municipality ValidationExpression
+<asp:RegularExpressionValidator ID="MncpltyVld" runat="server"
+    ForeColor="Red"
+    Display="Dynamic"
+    ControlToValidate="txtMunicipality"
+    ValidationExpression="^[a-zA-Z'.\s]{1,50}"
+    Text="Enter a valid Municipality" />
+
+// City ValidationExpression
+<asp:RegularExpressionValidator ID="CtyVld" runat="server"
+    ForeColor="Red"
+    Display="Dynamic"
+    ControlToValidate="txtCity"
+    ValidationExpression="^[a-zA-Z'.\s]{1,50}"
+    Text="Enter a valid City" />
+
+// Validate with onClientClick step
+OnClientClick="return validate()"
+<script type="text/javascript" language="javascript">
+    function validate() {
+        if (Page_ClientValidate())
+            return confirm('Are you sure?');
+    }
+</script>
