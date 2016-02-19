@@ -62,3 +62,6 @@ OnClientClick="return validate()"
             return confirm('Are you sure?');
     }
 </script>
+
+// Enter key submit
+this.Form.DefaultButton = this.btnAdd.UniqueID;
