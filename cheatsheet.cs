@@ -65,3 +65,15 @@ OnClientClick="return validate()"
 
 // Enter key submit
 this.Form.DefaultButton = this.btnAdd.UniqueID;
+
+//Global variables
+//Step 1: Declare in webconfig
+<appSetting>
+     <add key="username" value="someusername123"
+</appSetting>
+
+//Step 2: AppCode/Helper.pcs
+public static string username = ConfigurationManager.AppSettings["username"].ToString();
+
+//Step 3: Call in .cs
+Helper.username
