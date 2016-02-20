@@ -7,12 +7,17 @@
      Text="Enter a valid name" />
 
 // Date validator
-<asp:RegularExpressionValidator ID="bdayVld" runat="server"
-     ForeColor="red"
-     display="Dynamic"
-     ControlToValidate="txtBday"
-     ErrorMessage="Please Enter a valid date in the format (mm/dd/yyyy)"
-     ValidationExpression="^(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d$" />
+<asp:TextBox ID="txtBday" class="form-control" runat="server" TextMode="date" />
+<asp:RangeValidator ID="bdayVld" runat="server"
+    Display="Dynamic"
+    ForeColor="Red"
+    ControlToValidate="txtBday"
+    ErrorMessage="Choose a valid date"
+    MaximumValue="2017-01-01"
+    MinimumValue="1900-01-01" />
+// Data reading
+DateTime someDate = Convert.ToDateTime(data["Date"].ToString());
+txtBday.Text = someDate.ToString("yyyy-MM-dd");
 
 // Email validator
 <asp:RegularExpressionValidator ID="emlVld" runat="server"
@@ -37,7 +42,7 @@
     ControlToValidate="txtMobile"
     ValidationExpression="^[0-9]{11}$"
     ErrorMessage="Enter a valid Mobile Number" />
-
+    
 // Municipality ValidationExpression
 <asp:RegularExpressionValidator ID="MncpltyVld" runat="server"
     ForeColor="Red"
