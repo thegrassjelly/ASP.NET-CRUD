@@ -42,7 +42,7 @@ txtBday.Text = someDate.ToString("yyyy-MM-dd");
     ControlToValidate="txtMobile"
     ValidationExpression="^[0-9]{11}$"
     ErrorMessage="Enter a valid Mobile Number" />
-    
+
 // Municipality ValidationExpression
 <asp:RegularExpressionValidator ID="MncpltyVld" runat="server"
     ForeColor="Red"
@@ -82,3 +82,58 @@ public static string username = ConfigurationManager.AppSettings["username"].ToS
 
 //Step 3: Call in .cs
 Helper.username
+
+//AJAX autocomplete (City for instance)
+//Step 1: Init assembly
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
+
+//Step 2: Inside form clause
+<asp:ScriptManager runat="server" EnablePageMethods="true" />
+
+//Step 3: Call toolkit
+<ajaxToolkit:AutoCompleteExtender ID="ajaxCity" runat="server"
+    ServiceMethod="SearchCity"
+    MinimumPrefixLength="1"
+    CompletionInterval="100" EnableCaching="false" CompletionSetCount="10"
+    TargetControlID="txtCity"
+    FirstRowSelected="false" />
+
+//Step 4: CS
+[ScriptMethod()]
+[WebMethod]
+public static List<string> SearchCity(string prefixText, int count)
+{
+    using (SqlConnection con = new SqlConnection(Helper.GetCon()))
+    using (SqlCommand cmd = new SqlCommand())
+    {
+        con.Open();
+        cmd.Connection = con;
+        cmd.CommandText = "SELECT Name FROM Cities WHERE " +
+        "Name LIKE @SearchText + '%'";
+        cmd.Parameters.AddWithValue("@SearchText", prefixText);
+        List<string> cities = new List<string>();
+        using (SqlDataReader dr = cmd.ExecuteReader())
+        {
+            while (dr.Read())
+            {
+                cities.Add(dr["Name"].ToString());
+            }
+        }
+        con.Close();
+        return cities;
+    }
+}
+
+//AJAX Password strength
+<ajaxToolkit:PasswordStrength ID="ajaxPwd" runat="server" 
+    TargetControlID="txtPassword"
+    DisplayPosition="BelowRight"
+    StrengthIndicatorType="Text"
+    PreferredPasswordLength="10"
+    PrefixText="Strength: "
+    HelpStatusLabelID="TextBox1_HelpLabel"
+    TextStrengthDescriptions="Very Poor;Weak;Average;Strong;Excellent"
+    StrengthStyles="TextIndicator_TextBox1_Strength1;TextIndicator_TextBox1_Strength2;TextIndicator_TextBox1_Strength3;TextIndicator_TextBox1_Strength4;TextIndicator_TextBox1_Strength5"
+    MinimumNumericCharacters="0"
+    MinimumSymbolCharacters="0"
+    RequiresUpperAndLowerCaseCharacters="false" />
