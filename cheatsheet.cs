@@ -83,46 +83,61 @@ public static string username = ConfigurationManager.AppSettings["username"].ToS
 //Step 3: Call in .cs
 Helper.username
 
-//AJAX autocomplete (City for instance)
-//Step 1: Init assembly
-<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
+//jQuery autocomplete (City for instance)
+//Step 1: JS
+    <script type='text/javascript' src='<%= Page.ResolveUrl("~/js/newjs/jquery.min.js") %>'></script>
+    <script type='text/javascript' src='<%= Page.ResolveUrl("~/js/newjs/jquery-ui.min.js") %>'></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            SearchText();
+        });
 
-//Step 2: Inside form clause
-<asp:ScriptManager runat="server" EnablePageMethods="true" />
-
-//Step 3: Call toolkit
-<ajaxToolkit:AutoCompleteExtender ID="ajaxCity" runat="server"
-    ServiceMethod="SearchCity"
-    MinimumPrefixLength="1"
-    CompletionInterval="100" EnableCaching="false" CompletionSetCount="10"
-    TargetControlID="txtCity"
-    FirstRowSelected="false" />
-
-//Step 4: CS
-[ScriptMethod()]
-[WebMethod]
-public static List<string> SearchCity(string prefixText, int count)
-{
-    using (SqlConnection con = new SqlConnection(Helper.GetCon()))
-    using (SqlCommand cmd = new SqlCommand())
-    {
-        con.Open();
-        cmd.Connection = con;
-        cmd.CommandText = "SELECT Name FROM Cities WHERE " +
-        "Name LIKE @SearchText + '%'";
-        cmd.Parameters.AddWithValue("@SearchText", prefixText);
-        List<string> cities = new List<string>();
-        using (SqlDataReader dr = cmd.ExecuteReader())
-        {
-            while (dr.Read())
-            {
-                cities.Add(dr["Name"].ToString());
+        function SearchText() {
+            $(".autosuggest").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        url: "Profile.aspx/SearchCity",
+                        data: "{'prefixText':'" + document.getElementById('<%=txtCity.ClientID%>').value + "'}",
+                            dataType: "json",
+                            success: function (data) {
+                                response(data.d);
+                            },
+                            error: function (result) {
+                                alert("Error" + result.result);
+                            }
+                        });
+                    }
+                });
             }
+    </script>
+
+//Step 2: Asign class to textbox (.autosuggest)
+//Step 3: CS
+    [WebMethod]
+    public static List<string> SearchCity(string prefixText)
+    {
+        List<string> cities = new List<string>();
+        using (SqlConnection con = new SqlConnection(Helper.GetCon()))
+        using (SqlCommand cmd = new SqlCommand())
+        {
+            cmd.CommandText = "SELECT Name FROM Cities WHERE " +
+                    "Name LIKE @SearchText + '%'";
+            cmd.Parameters.AddWithValue("@SearchText", prefixText);
+            cmd.Connection = con;
+            con.Open();
+            using (SqlDataReader dr = cmd.ExecuteReader())
+            {
+                while (dr.Read())
+                {
+                    cities.Add(dr["Name"].ToString());
+                }
+            }
+            con.Close();
         }
-        con.Close();
         return cities;
     }
-}
 
 //AJAX Password strength
 <ajaxToolkit:PasswordStrength ID="ajaxPwd" runat="server" 
