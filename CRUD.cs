@@ -150,3 +150,12 @@
             Response.Redirect("ViewCustomer.aspx");
         }
     }
+
+//Eval ternary operator example
+//Evaluate class on active or inactive status
+<td>
+<button runat="server" type="button"
+class='<%# Eval("AmbulanceStatus").ToString() == "Active" ? "btn btn-success btn-xs" : "btn btn-danger btn-xs" %>'>
+<%# Eval("AmbulanceStatus") %>
+</button>
+</td>
