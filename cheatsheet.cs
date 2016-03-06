@@ -161,3 +161,18 @@ class='<%# Eval("AmbulanceStatus").ToString() == "Active" ? "btn btn-success btn
 <%# Eval("AmbulanceStatus") %>
 </button>
 </td>
+
+//Update panel & update loading screen
+<asp:ScriptManager runat="server"></asp:ScriptManager>
+<asp:UpdateProgress ID="updateProgress" runat="server">
+    <ProgressTemplate>
+        <div style="position: fixed; text-align: center; height: 100%; width: 100%; top: 0; right: 0; left: 0; z-index: 9999999; background-color: #000000; opacity: 0.7;">
+            <asp:Image ID="imgUpdateProgress" runat="server" ImageUrl="~/images/ajax-loader.gif" AlternateText="Loading ..." ToolTip="Loading ..." Style="padding: 10px; position: fixed; top: 45%; left: 50%;" />
+        </div>
+    </ProgressTemplate>
+</asp:UpdateProgress>
+<asp:UpdatePanel runat="server">
+    <ContentTemplate>
+    //Form actions here
+    </ContentTemplate>
+</asp:UpdatePanel>
