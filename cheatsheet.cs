@@ -176,3 +176,8 @@ class='<%# Eval("AmbulanceStatus").ToString() == "Active" ? "btn btn-success btn
     //Form actions here
     </ContentTemplate>
 </asp:UpdatePanel>
+
+//Exception logger
+Helper.LogException(Session["userid"].ToString(), "Membership Renewal, Automatic Renewal Mail ",
+                            "Exception Type: " + ex.GetType().ToString() + " " +
+                            "Exception Message: " + ex.Message.ToString());
